@@ -5,6 +5,7 @@ import ActionCached from 'material-ui/lib/svg-icons/action/cached'
 import Paper from 'material-ui/lib/paper'
 import List from 'material-ui/lib/lists/list'
 import ListItem from 'material-ui/lib/lists/list-item'
+import ActionTrendingDown from 'material-ui/lib/svg-icons/action/trending-down'
 import Dialog from 'material-ui/lib/dialog'
 import FlatButton from 'material-ui/lib/flat-button'
 import Toggle from 'material-ui/lib/toggle'
@@ -48,6 +49,7 @@ const App = ({
           key={device.dhcp.mac}
           primaryText={device.dhcp.hostname}
           onTouchTap={() => showDeviceDetails(device)}
+          leftIcon={device.has_profile ? <ActionTrendingDown /> : null}
         />
       ))}
       </List>
