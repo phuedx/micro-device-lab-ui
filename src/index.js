@@ -1,5 +1,6 @@
 import React from 'react'
 import injectTapEventPlugin from 'react-tap-event-plugin'
+import createLogger from 'redux-logger'
 import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import reducer from './reducers'
@@ -10,7 +11,8 @@ import App from './components'
 
 injectTapEventPlugin()
 
-const createStoreWithMiddleware = applyMiddleware(thunk)(createStore)
+const logger = createLogger()
+const createStoreWithMiddleware = applyMiddleware(thunk, logger)(createStore)
 const store = createStoreWithMiddleware(reducer)
 
 store.dispatch(refresh())
