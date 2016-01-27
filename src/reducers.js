@@ -4,7 +4,9 @@ import {
   REFRESH_FAILURE,
   SHOW_DEVICE_DETAILS,
   HIDE_DEVICE_DETAILS,
-  TOGGLE_NETWORK_THROTTLING
+  TOGGLE_NETWORK_THROTTLING,
+  THROTTLE_DEVICE_REQUEST,
+  THROTTLE_DEVICE_SUCCESS
 } from './actions'
 
 const INITIAL_STATE = {
@@ -13,7 +15,8 @@ const INITIAL_STATE = {
   profiles: [],
   isShowingDeviceDetails: false,
   currentDevice: {},
-  defaultProfile: {}
+  defaultProfile: {},
+  isThrottlingDevice: false
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -70,6 +73,16 @@ export default (state = INITIAL_STATE, action) => {
 
       return Object.assign({}, state, {
         currentDevice
+      })
+
+    case THROTTLE_DEVICE_REQUEST:
+      return Object.assign({}, state, {
+        isThrottlingDevice: true
+      })
+
+    case THROTTLE_DEVICE_SUCCESS:
+      return Object.assign({}, state, {
+        isThrottlingDevice: false
       })
 
     default:

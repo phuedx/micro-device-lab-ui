@@ -11,7 +11,13 @@ import Toggle from 'material-ui/lib/toggle'
 import SelectField from 'material-ui/lib/select-field'
 import MenuItem from 'material-ui/lib/menus/menu-item'
 import { connect } from 'react-redux'
-import { refresh, showDeviceDetails, hideDeviceDetails, toggleNetworkThrottling } from './actions'
+import {
+  refresh,
+  showDeviceDetails,
+  hideDeviceDetails,
+  toggleNetworkThrottling,
+  throttleDevice
+} from './actions'
 
 const App = ({
   isRefreshing,
@@ -23,7 +29,9 @@ const App = ({
   hideDeviceDetails,
   currentDevice,
   defaultProfile,
-  toggleNetworkThrottling
+  toggleNetworkThrottling,
+  throttleDevice,
+  isThrottlingDevice
 }) => (
   <div>
     <AppBar
@@ -56,6 +64,13 @@ const App = ({
           label='Cancel'
           secondary
           onTouchTap={hideDeviceDetails}
+          disabled={isThrottlingDevice}
+        />,
+        <FlatButton
+          label='Save'
+          primary
+          onTouchTap={() => throttleDevice(currentDevice)}
+          disabled={isThrottlingDevice}
         />
       ]}
     >
@@ -86,7 +101,8 @@ const actions = {
   refresh,
   showDeviceDetails,
   hideDeviceDetails,
-  toggleNetworkThrottling
+  toggleNetworkThrottling,
+  throttleDevice
 }
 
 export default connect(identity, actions)(App)

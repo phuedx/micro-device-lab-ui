@@ -1,5 +1,5 @@
 import { Promise } from 'es6-promise'
-import { getDevices, getProfiles } from './api'
+import { getDevices, getProfiles, updateDevice } from './api'
 
 export const REFRESH_REQUEST = 'refresh_request'
 export const REFRESH_SUCCESS = 'refresh_success'
@@ -9,6 +9,10 @@ export const SHOW_DEVICE_DETAILS = 'show_device_details'
 export const HIDE_DEVICE_DETAILS = 'hide_device_details'
 
 export const TOGGLE_NETWORK_THROTTLING = 'toggle_network_throttling'
+
+export const THROTTLE_DEVICE_REQUEST = 'throttle_device_request'
+export const THROTTLE_DEVICE_SUCCESS = 'throttle_device_success'
+export const THROTTLE_DEVICE_FAILURE = 'throttle_device_failure'
 
 function refreshRequest () {
   return {
@@ -61,5 +65,45 @@ export function hideDeviceDetails () {
 export function toggleNetworkThrottling () {
   return {
     type: TOGGLE_NETWORK_THROTTLING
+  }
+}
+
+function throttleDeviceRequest () {
+  return {
+    type: THROTTLE_DEVICE_REQUEST
+  }
+}
+
+function throttleDeviceSuccess (device) {
+  return {
+    type: THROTTLE_DEVICE_SUCCESS,
+    device
+  }
+}
+
+function throttleDeviceFailure (error, device) {
+  return {
+    type: THROTTLE_DEVICE_FAILURE,
+    error,
+    device
+  }
+}
+
+export function throttleDevice (device) {
+  return (dispatch) => {
+    dispatch(throttleDeviceRequest())
+
+    updateDevice(device).then(
+      () => {
+        dispatch(throttleDeviceSuccess(device))
+
+        // FIXME: The `throttleDevice` action shouldn't know that after the device has been
+        // successfully throttled, the `hideDeviceDetails` and `refresh` actions should be
+        // dispatched.
+        dispatch(hideDeviceDetails())
+        dispatch(refresh())
+      },
+      error => throttleDeviceFailure(error, device)
+    )
   }
 }
