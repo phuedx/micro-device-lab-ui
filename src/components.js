@@ -11,7 +11,7 @@ import Toggle from 'material-ui/lib/toggle'
 import SelectField from 'material-ui/lib/select-field'
 import MenuItem from 'material-ui/lib/menus/menu-item'
 import { connect } from 'react-redux'
-import { refresh, showDeviceDetails, hideDeviceDetails } from './actions'
+import { refresh, showDeviceDetails, hideDeviceDetails, toggleNetworkThrottling } from './actions'
 
 const App = ({
   isRefreshing,
@@ -21,7 +21,9 @@ const App = ({
   showDeviceDetails,
   isShowingDeviceDetails,
   hideDeviceDetails,
-  currentDevice
+  currentDevice,
+  defaultProfile,
+  toggleNetworkThrottling
 }) => (
   <div>
     <AppBar
@@ -60,11 +62,12 @@ const App = ({
       <Toggle
         label='Enabled'
         defaultToggled={currentDevice.has_profile}
+        onToggle={toggleNetworkThrottling}
       />
       <SelectField
         floatingLabelText='Profile'
         disabled={!currentDevice.has_profile}
-        value={currentDevice.profile}
+        value={currentDevice.has_profile ? currentDevice.profile : defaultProfile.name}
       >
         {profiles.map(({ name }) => (
           <MenuItem
@@ -79,5 +82,11 @@ const App = ({
 )
 
 const identity = (x) => x
+const actions = {
+  refresh,
+  showDeviceDetails,
+  hideDeviceDetails,
+  toggleNetworkThrottling
+}
 
-export default connect(identity, { refresh, showDeviceDetails, hideDeviceDetails })(App)
+export default connect(identity, actions)(App)

@@ -8,6 +8,8 @@ export const REFRESH_FAILURE = 'refresh_failure'
 export const SHOW_DEVICE_DETAILS = 'show_device_details'
 export const HIDE_DEVICE_DETAILS = 'hide_device_details'
 
+export const TOGGLE_NETWORK_THROTTLING = 'toggle_network_throttling'
+
 function refreshRequest () {
   return {
     type: REFRESH_REQUEST
@@ -53,5 +55,11 @@ export function showDeviceDetails (device) {
 export function hideDeviceDetails () {
   return {
     type: HIDE_DEVICE_DETAILS
+  }
+}
+
+export function toggleNetworkThrottling () {
+  return {
+    type: TOGGLE_NETWORK_THROTTLING
   }
 }
