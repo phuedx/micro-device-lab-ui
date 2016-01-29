@@ -1,7 +1,9 @@
+/* global BASE_API_URL */
+
 import fetch from 'isomorphic-fetch'
 
-function internalFetch (url, options) {
-  return fetch(url, options)
+function internalFetch (path, options) {
+  return fetch(`${BASE_API_URL}${path}`, options)
     .then((response) => {
       if (!response.ok) {
         throw new Error(response.statusText)
@@ -13,11 +15,11 @@ function internalFetch (url, options) {
 }
 
 export function getDevices () {
-  return internalFetch('//127.0.0.1:8080/devices')
+  return internalFetch('/devices')
 }
 
 export function getProfiles () {
-  return internalFetch('//127.0.0.1:8080/profiles')
+  return internalFetch('/profiles')
 }
 
 export function updateDevice (device) {
@@ -25,7 +27,7 @@ export function updateDevice (device) {
     profile: device.profile
   })
 
-  return fetch(`//127.0.0.1:8080/devices/${device.dhcp.mac}`, {
+  return fetch(`/devices/${device.dhcp.mac}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json'
