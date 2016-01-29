@@ -6,7 +6,8 @@ import {
   HIDE_DEVICE_DETAILS,
   TOGGLE_NETWORK_THROTTLING,
   THROTTLE_DEVICE_REQUEST,
-  THROTTLE_DEVICE_SUCCESS
+  THROTTLE_DEVICE_SUCCESS,
+  SELECT_PROFILE
 } from './actions'
 
 const INITIAL_STATE = {
@@ -20,6 +21,8 @@ const INITIAL_STATE = {
 }
 
 export default (state = INITIAL_STATE, action) => {
+  let currentDevice
+
   switch (action.type) {
     case REFRESH_REQUEST:
       return Object.assign({}, state, {
@@ -56,8 +59,7 @@ export default (state = INITIAL_STATE, action) => {
       })
 
     case TOGGLE_NETWORK_THROTTLING:
-      let currentDevice = Object.assign({}, state.currentDevice)
-
+      currentDevice = Object.assign({}, state.currentDevice)
       currentDevice.has_profile = !currentDevice.has_profile
 
       // FIXME: Special-casing the string "None".
@@ -83,6 +85,18 @@ export default (state = INITIAL_STATE, action) => {
     case THROTTLE_DEVICE_SUCCESS:
       return Object.assign({}, state, {
         isThrottlingDevice: false
+      })
+
+    case SELECT_PROFILE:
+      const { profile } = action
+
+      currentDevice = Object.assign({}, state.currentDevice, {
+        has_profile: true,
+        profile
+      })
+
+      return Object.assign({}, state, {
+        currentDevice
       })
 
     default:

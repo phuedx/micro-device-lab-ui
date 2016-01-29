@@ -14,6 +14,8 @@ export const THROTTLE_DEVICE_REQUEST = 'throttle_device_request'
 export const THROTTLE_DEVICE_SUCCESS = 'throttle_device_success'
 export const THROTTLE_DEVICE_FAILURE = 'throttle_device_failure'
 
+export const SELECT_PROFILE = 'select_profile'
+
 function refreshRequest () {
   return {
     type: REFRESH_REQUEST
@@ -105,5 +107,12 @@ export function throttleDevice (device) {
       },
       error => throttleDeviceFailure(error, device)
     )
+  }
+}
+
+export function selectProfile (profile) {
+  return {
+    type: SELECT_PROFILE,
+    profile
   }
 }

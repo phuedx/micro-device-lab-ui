@@ -17,7 +17,8 @@ import {
   showDeviceDetails,
   hideDeviceDetails,
   toggleNetworkThrottling,
-  throttleDevice
+  throttleDevice,
+  selectProfile
 } from './actions'
 
 const App = ({
@@ -32,7 +33,8 @@ const App = ({
   defaultProfile,
   toggleNetworkThrottling,
   throttleDevice,
-  isThrottlingDevice
+  isThrottlingDevice,
+  selectProfile
 }) => (
   <div>
     <AppBar
@@ -85,6 +87,7 @@ const App = ({
         floatingLabelText='Profile'
         disabled={!currentDevice.has_profile}
         value={currentDevice.has_profile ? currentDevice.profile : defaultProfile.name}
+        onChange={(_1, _2, profile) => selectProfile(profile)}
       >
         {profiles.map(({ name }) => (
           <MenuItem
@@ -104,7 +107,8 @@ const actions = {
   showDeviceDetails,
   hideDeviceDetails,
   toggleNetworkThrottling,
-  throttleDevice
+  throttleDevice,
+  selectProfile
 }
 
 export default connect(identity, actions)(App)
