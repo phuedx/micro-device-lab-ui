@@ -17,6 +17,8 @@ const store = createStoreWithMiddleware(reducer)
 
 store.dispatch(refresh())
 
+import './index.css'
+
 render(
   <Provider store={store}>
     <App />
