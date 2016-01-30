@@ -1,6 +1,7 @@
 'use strict'
 
-const BASE_API_URL = process.env.NODE_ENV === 'production'
+const PRODUCTION = process.env.NODE_ENV === 'production'
+const BASE_API_URL = PRODUCTION
   ? ''
   : 'http://127.0.0.1:8081'
 
@@ -20,7 +21,8 @@ let config = getConfig({
 })
 
 config.plugins.push(new webpack.DefinePlugin({
-  BASE_API_URL: JSON.stringify(BASE_API_URL)
+  BASE_API_URL: JSON.stringify(BASE_API_URL),
+  PRODUCTION
 }))
 
 module.exports = config
