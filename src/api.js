@@ -2,16 +2,23 @@
 
 import fetch from 'isomorphic-fetch'
 
-function internalFetch (path, options) {
+function internalFetch (path, options, json) {
+  if (typeof json === 'undefined') {
+    json = true
+  }
+
   return fetch(`${BASE_API_URL}${path}`, options)
     .then((response) => {
       if (!response.ok) {
         throw new Error(response.statusText)
       }
 
-      return response
+      if (!json) {
+        return response
+      }
+
+      return response.json()
     })
-    .then(response => response.json())
 }
 
 export function getDevices () {
@@ -26,18 +33,20 @@ export function updateDevice (device) {
   const body = JSON.stringify({
     profile: device.profile
   })
-
-  return fetch(`/devices/${device.dhcp.mac}`, {
+  const options = {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json'
     },
     body
-  }).then((response) => {
-    if (!response.ok) {
-      throw new Error(response.statusText)
-    }
+  }
 
-    return response
-  })
+  return internalFetch(
+    `/devices/${device.dhcp.mac}`,
+    options,
+
+    // PUT /devices/:mac returns 204 No Content on success so don't try to JSON-decode the response
+    // body.
+    false
+  )
 }
