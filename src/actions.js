@@ -103,7 +103,6 @@ export function throttleDevice (device) {
         // successfully throttled, the `hideDeviceDetails` and `refresh` actions should be
         // dispatched.
         dispatch(hideDeviceDetails())
-        dispatch(refresh())
       },
       error => throttleDeviceFailure(error, device)
     )

@@ -22,6 +22,7 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
   let currentDevice
+  let devices
 
   switch (action.type) {
     case REFRESH_REQUEST:
@@ -30,11 +31,11 @@ export default (state = INITIAL_STATE, action) => {
       })
 
     case REFRESH_SUCCESS:
-      const { devices, profiles } = action
+      const { profiles } = action
 
       return Object.assign({}, state, {
         isRefreshing: false,
-        devices,
+        devices: action.devices,
         profiles,
         defaultProfile: profiles[0]
       })
@@ -45,11 +46,9 @@ export default (state = INITIAL_STATE, action) => {
       })
 
     case SHOW_DEVICE_DETAILS:
-      const { device } = action
-
       return Object.assign({}, state, {
         isShowingDeviceDetails: true,
-        currentDevice: device
+        currentDevice: action.device
       })
 
     case HIDE_DEVICE_DETAILS:
@@ -83,8 +82,21 @@ export default (state = INITIAL_STATE, action) => {
       })
 
     case THROTTLE_DEVICE_SUCCESS:
+      const { device } = action
+
+      devices = state.devices.slice()
+
+      for (let i = 0; i < devices.length; ++i) {
+        if (devices[i].dhcp.mac === device.dhcp.mac) {
+          devices[i] = device
+
+          break
+        }
+      }
+
       return Object.assign({}, state, {
-        isThrottlingDevice: false
+        isThrottlingDevice: false,
+        devices
       })
 
     case SELECT_PROFILE:
