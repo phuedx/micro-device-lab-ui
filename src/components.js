@@ -52,6 +52,7 @@ const App = ({
           primaryText={device.dhcp.hostname}
           onTouchTap={() => showDeviceDetails(device)}
           leftIcon={device.has_profile ? <ActionTrendingDown /> : null}
+          secondaryText={device.has_profile ? device.profile : null}
         />
       ))}
       </List>
